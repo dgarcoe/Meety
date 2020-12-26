@@ -35,8 +35,8 @@ class MeetyMain : Game() {
     override fun create() {
 
         skin = Skin()
-        skin.addRegions(TextureAtlas(Gdx.files.internal("skin/sgx/skin/sgx-ui.atlas")))
-        skin.load(Gdx.files.internal("skin/sgx/skin/sgx-ui.json"))
+        skin.addRegions(TextureAtlas(Gdx.files.internal("skin/skin/metal-ui.atlas")))
+        skin.load(Gdx.files.internal("skin/skin/metal-ui.json"))
 
         mainMenuScreen = MainMenuScreen(this, skin)
         createMeetingScreen = CreateMeetingScreen(this, skin)
