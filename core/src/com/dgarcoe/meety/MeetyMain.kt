@@ -49,6 +49,36 @@ class MeetyMain : Game() {
         setScreen(currentScreen)
 
     }
-    override fun render() {}
-    override fun dispose() {}
+
+    fun createMeeting() {
+        currentState.createMeeting()
+    }
+
+    fun joinMeeting() {
+        currentState.joinMeeting()
+    }
+
+    fun startMeeting() {
+        currentState.startMeeting()
+    }
+
+    fun startTurn() {
+        currentState.startTurn()
+    }
+
+    fun endTurn() {
+        currentState.endTurn()
+    }
+
+    fun endMeeting() {
+        currentState.endMeeting()
+    }
+
+    fun configureApp() {
+        currentState.configureApp()
+    }
+
+    fun returnMainMenu() {
+        currentState.returnMainMenu()
+    }
 }
