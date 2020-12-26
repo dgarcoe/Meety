@@ -1,6 +1,6 @@
-package com.github.dgarcoe.states
+package com.dgarcoe.meety.states
 
-import com.github.dgarcoe.MeetyMain
+import com.dgarcoe.meety.MeetyMain
 
 abstract class MeetyState(val app:MeetyMain) {
     open fun createMeeting():Int = throw UnsupportedOperationException("Operation not supported")

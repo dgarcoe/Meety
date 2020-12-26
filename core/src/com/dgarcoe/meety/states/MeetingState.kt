@@ -1,6 +1,6 @@
-package com.github.dgarcoe.states
+package com.dgarcoe.meety.states
 
-import com.github.dgarcoe.MeetyMain
+import com.dgarcoe.meety.MeetyMain
 
 class MeetingState(app: MeetyMain) : MeetyState(app) {
 
