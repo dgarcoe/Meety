@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -16,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.meety.MeetyMain
 
-class MainMenuScreen(val app:MeetyMain, val skin: Skin) : Screen, InputProcessor {
+class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFont) : Screen, InputProcessor {
 
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
@@ -51,22 +52,38 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin) : Screen, InputProcessor
     private fun setStage() {
 
         val headingStyle = Label.LabelStyle()
+        headingStyle.font = fontTitle
 
-        val heading = Label("Sewer Car", headingStyle)
+        val heading = Label("Meety", headingStyle)
 
-        val buttonCreateMeeting = TextButton("Play", skin)
+        val buttonCreateMeeting = TextButton("Create Meeting", skin)
         buttonCreateMeeting.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 app.createMeeting()
             }
         })
-        buttonCreateMeeting.pad(15f)
+
+        val buttonJoinMeeting = TextButton("Join Meeting", skin)
+        buttonJoinMeeting.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                app.joinMeeting()
+            }
+        })
+
+        val buttonConfiguration = TextButton("Configuration", skin)
+        buttonConfiguration.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                app.configureApp()
+            }
+        })
 
         val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
         val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
 
-        table.add(heading).spaceBottom(100f).expandX().row()
+        table.add(heading).spaceBottom(120f).expandX().row()
         table.add(buttonCreateMeeting).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.add(buttonJoinMeeting).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.add(buttonConfiguration).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
 
         stage.addActor(table)
     }
@@ -82,7 +99,7 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin) : Screen, InputProcessor
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         cam!!.update()
@@ -92,19 +109,20 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin) : Screen, InputProcessor
     }
 
     override fun pause() {
-        TODO("Not yet implemented")
+
     }
 
     override fun resume() {
-        TODO("Not yet implemented")
+
     }
 
     override fun resize(width: Int, height: Int) {
-        TODO("Not yet implemented")
+        viewPort!!.update(width, height)
+        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
     }
 
     override fun dispose() {
-        TODO("Not yet implemented")
+        stage.dispose()
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
