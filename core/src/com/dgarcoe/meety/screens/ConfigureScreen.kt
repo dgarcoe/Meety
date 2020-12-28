@@ -31,14 +31,7 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
 
     private fun initStage() {
 
-        val aspectRatio = Gdx.graphics.height/Gdx.graphics.width
-
-        cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
-        viewPort = FitViewport(WIDTH_CAMERA.toFloat()*aspectRatio, HEIGHT_CAMERA.toFloat(),cam)
-        (viewPort as FitViewport).apply()
-        cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
-        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
-        cam!!.update()
+        app.renderer.show()
 
         stage = Stage()
         table = Table(skin)
@@ -108,10 +101,7 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        cam!!.update()
+        app.renderer.render(delta)
 
         stage.act(delta)
         stage.draw()
@@ -126,8 +116,7 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
     }
 
     override fun resize(width: Int, height: Int) {
-        viewPort!!.update(width, height)
-        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
+        app.renderer.resize(width, height)
     }
 
     override fun dispose() {

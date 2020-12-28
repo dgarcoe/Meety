@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.dgarcoe.meety.renderers.MeetyRenderer
 import com.dgarcoe.meety.screens.*
 import com.dgarcoe.meety.states.*
 
@@ -33,6 +34,8 @@ class MeetyMain : Game() {
     lateinit var configureScreen: ConfigureScreen
 
     lateinit var skin: Skin
+
+    val renderer : MeetyRenderer = MeetyRenderer()
 
     override fun create() {
 
