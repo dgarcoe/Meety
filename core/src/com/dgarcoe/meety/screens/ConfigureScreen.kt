@@ -4,14 +4,20 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.meety.MeetyMain
 
 class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
+
+    private val WIDTH_CAMERA = 128
+    private val HEIGHT_CAMERA = 256
 
     lateinit var stage: Stage
     lateinit var table: Table
@@ -20,7 +26,19 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
     private val HEIGHT_BUTTON_PERCENT = 0.05f
     private val WIDTH_TEXT_PERCENT = 0.5f
 
+    var cam: OrthographicCamera? = null
+    var viewPort: Viewport? = null
+
     private fun initStage() {
+
+        val aspectRatio = Gdx.graphics.height/Gdx.graphics.width
+
+        cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
+        viewPort = FitViewport(WIDTH_CAMERA.toFloat()*aspectRatio, HEIGHT_CAMERA.toFloat(),cam)
+        (viewPort as FitViewport).apply()
+        cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
+        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
+        cam!!.update()
 
         stage = Stage()
         table = Table(skin)
@@ -32,8 +50,8 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
     private fun setStage() {
 
         val username = Label("Username: ",skin)
-        val mqttServerIP = Label("MQTT Broker IP: ",skin)
-        val mqttServerPort = Label("MQTT Broker port: ",skin)
+        val mqttServerIP = Label("MQTT IP: ",skin)
+        val mqttServerPort = Label("MQTT port: ",skin)
 
         val usernameTextField = TextField("", skin)
         usernameTextField.width = 40F
@@ -51,6 +69,7 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
                 app.preferences!!.putString("USERNAME",usernameTextField.text)
                 app.preferences!!.putString("MQTT_IP",mqttServerIPTextField.text)
                 app.preferences!!.putString("MQTT_PORT",mqttServerPortTextField.text)
+                app.preferences!!.flush()
             }
         })
 
@@ -65,12 +84,12 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
         val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
         val textFieldWidth = Gdx.graphics.width*WIDTH_TEXT_PERCENT
 
-        table.add(username).spaceBottom(15f)
+        table.add(username).spaceBottom(15f).align(Align.left)
         table.add(usernameTextField).width(textFieldWidth).spaceBottom(15f).row()
-        table.add(mqttServerIP).spaceBottom(15f)
+        table.add(mqttServerIP).spaceBottom(15f).align(Align.left)
         table.add(mqttServerIPTextField).width(textFieldWidth).spaceBottom(15f).row()
-        table.add(mqttServerPort).spaceBottom(15f)
-        table.add(mqttServerPortTextField).width(textFieldWidth).spaceBottom(15f).row()
+        table.add(mqttServerPort).spaceBottom(45f).align(Align.left)
+        table.add(mqttServerPortTextField).width(textFieldWidth).spaceBottom(45f).row()
         table.add(buttonSave).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
         table.add(buttonBack).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
 
@@ -92,7 +111,7 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        app.cam!!.update()
+        cam!!.update()
 
         stage.act(delta)
         stage.draw()
@@ -107,7 +126,8 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
     }
 
     override fun resize(width: Int, height: Int) {
-
+        viewPort!!.update(width, height)
+        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
     }
 
     override fun dispose() {

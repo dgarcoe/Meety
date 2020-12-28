@@ -41,7 +41,6 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
         cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
         cam!!.update()
-        app.setCamAndViewport(cam!!, viewPort as FitViewport)
 
         stage = Stage()
         table = Table(skin)

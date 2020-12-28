@@ -34,9 +34,6 @@ class MeetyMain : Game() {
 
     lateinit var skin: Skin
 
-    var cam: OrthographicCamera? = null
-    var viewPort: Viewport? = null
-
     override fun create() {
 
         val generatorTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/BitPap.ttf"))
@@ -77,11 +74,6 @@ class MeetyMain : Game() {
     fun startNewScreen(screen:Screen) {
         currentScreen = screen
         super.setScreen(screen)
-    }
-
-    fun setCamAndViewport(camera: OrthographicCamera,viewport: Viewport) {
-        cam = camera
-        viewPort = viewport
     }
 
     fun createMeeting() {
