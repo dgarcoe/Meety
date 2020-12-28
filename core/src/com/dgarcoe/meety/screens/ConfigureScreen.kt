@@ -16,18 +16,12 @@ import com.dgarcoe.meety.MeetyMain
 
 class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
 
-    private val WIDTH_CAMERA = 128
-    private val HEIGHT_CAMERA = 256
-
     lateinit var stage: Stage
     lateinit var table: Table
 
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
     private val WIDTH_TEXT_PERCENT = 0.5f
-
-    var cam: OrthographicCamera? = null
-    var viewPort: Viewport? = null
 
     private fun initStage() {
 

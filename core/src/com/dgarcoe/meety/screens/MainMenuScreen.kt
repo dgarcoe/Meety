@@ -19,17 +19,11 @@ import com.dgarcoe.meety.MeetyMain
 
 class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFont) : Screen, InputProcessor {
 
-    private val WIDTH_CAMERA = 128
-    private val HEIGHT_CAMERA = 256
-
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
 
     lateinit var stage: Stage
     lateinit var table: Table
-
-    var cam: OrthographicCamera? = null
-    var viewPort: Viewport? = null
 
     private fun initStage() {
 

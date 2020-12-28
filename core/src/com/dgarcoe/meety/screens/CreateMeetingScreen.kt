@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.dgarcoe.meety.MeetyMain
 
 class CreateMeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
+
+
+
     override fun hide() {
         TODO("Not yet implemented")
     }
