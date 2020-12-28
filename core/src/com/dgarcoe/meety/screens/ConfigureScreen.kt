@@ -1,38 +1,117 @@
 package com.dgarcoe.meety.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.dgarcoe.meety.MeetyMain
 
 class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
 
+    lateinit var stage: Stage
+    lateinit var table: Table
+
+    private val WIDTH_BUTTON_PERCENT = 0.45f
+    private val HEIGHT_BUTTON_PERCENT = 0.05f
+    private val WIDTH_TEXT_PERCENT = 0.5f
+
+    private fun initStage() {
+
+        stage = Stage()
+        table = Table(skin)
+
+        table.setFillParent(true)
+        Gdx.input.inputProcessor = stage
+    }
+
+    private fun setStage() {
+
+        val username = Label("Username: ",skin)
+        val mqttServerIP = Label("MQTT Broker IP: ",skin)
+        val mqttServerPort = Label("MQTT Broker port: ",skin)
+
+        val usernameTextField = TextField("", skin)
+        usernameTextField.width = 40F
+        usernameTextField.text = app.preferences!!.getString("USERNAME")
+        val mqttServerIPTextField = TextField("", skin)
+        mqttServerIPTextField.width = 40F
+        mqttServerIPTextField.text = app.preferences!!.getString("MQTT_IP")
+        val mqttServerPortTextField = TextField("", skin)
+        mqttServerPortTextField.width = 40F
+        mqttServerPortTextField.text = app.preferences!!.getString("MQTT_PORT")
+
+        val buttonSave = TextButton("Save", skin)
+        buttonSave.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                app.preferences!!.putString("USERNAME",usernameTextField.text)
+                app.preferences!!.putString("MQTT_IP",mqttServerIPTextField.text)
+                app.preferences!!.putString("MQTT_PORT",mqttServerPortTextField.text)
+            }
+        })
+
+        val buttonBack = TextButton("Back", skin)
+        buttonBack.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                app.returnMainMenu()
+            }
+        })
+
+        val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
+        val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
+        val textFieldWidth = Gdx.graphics.width*WIDTH_TEXT_PERCENT
+
+        table.add(username).spaceBottom(15f)
+        table.add(usernameTextField).width(textFieldWidth).spaceBottom(15f).row()
+        table.add(mqttServerIP).spaceBottom(15f)
+        table.add(mqttServerIPTextField).width(textFieldWidth).spaceBottom(15f).row()
+        table.add(mqttServerPort).spaceBottom(15f)
+        table.add(mqttServerPortTextField).width(textFieldWidth).spaceBottom(15f).row()
+        table.add(buttonSave).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.add(buttonBack).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+
+        stage.addActor(table)
+
+    }
+
     override fun hide() {
-        TODO("Not yet implemented")
+        dispose()
+        Gdx.input.inputProcessor = null
     }
 
     override fun show() {
-        TODO("Not yet implemented")
+        initStage()
+        setStage()
     }
 
     override fun render(delta: Float) {
-        TODO("Not yet implemented")
+        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        app.cam!!.update()
+
+        stage.act(delta)
+        stage.draw()
     }
 
     override fun pause() {
-        TODO("Not yet implemented")
+
     }
 
     override fun resume() {
-        TODO("Not yet implemented")
+
     }
 
     override fun resize(width: Int, height: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun dispose() {
-        TODO("Not yet implemented")
+        stage.dispose()
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

@@ -1,17 +1,18 @@
 package com.dgarcoe.meety
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Game
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
+import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.meety.screens.*
 import com.dgarcoe.meety.states.*
 
 class MeetyMain : Game() {
+
+    var preferences : Preferences? = null
 
     lateinit var currentState : MeetyState
     lateinit var currentScreen : Screen
@@ -31,8 +32,10 @@ class MeetyMain : Game() {
     val configurationState : ConfigurationState = ConfigurationState(this)
     lateinit var configureScreen: ConfigureScreen
 
-
     lateinit var skin: Skin
+
+    var cam: OrthographicCamera? = null
+    var viewPort: Viewport? = null
 
     override fun create() {
 
@@ -41,14 +44,8 @@ class MeetyMain : Game() {
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterButtons = FreeTypeFontGenerator.FreeTypeFontParameter()
 
-        if (Gdx.graphics.height>1500) {
-            parameterTitle.size = 140
-            parameterButtons.size = 25
-        } else {
-            parameterTitle.size = 140
-            parameterButtons.size = 25
-        }
-
+        parameterTitle.size = 140
+        parameterButtons.size = 25
         parameterTitle.color = Color.ORANGE
         parameterButtons.color = Color.BLACK
 
@@ -58,6 +55,7 @@ class MeetyMain : Game() {
         val fontButtons = generatorButtons.generateFont(parameterButtons)
         generatorButtons.dispose()
 
+        preferences = Gdx.app.getPreferences("MeetyPreferences")
 
         skin = Skin()
         skin.add("font",fontButtons)
@@ -74,6 +72,16 @@ class MeetyMain : Game() {
         currentScreen = mainMenuScreen
         setScreen(currentScreen)
 
+    }
+
+    fun startNewScreen(screen:Screen) {
+        currentScreen = screen
+        super.setScreen(screen)
+    }
+
+    fun setCamAndViewport(camera: OrthographicCamera,viewport: Viewport) {
+        cam = camera
+        viewPort = viewport
     }
 
     fun createMeeting() {

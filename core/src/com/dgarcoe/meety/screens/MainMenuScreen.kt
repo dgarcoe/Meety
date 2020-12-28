@@ -41,6 +41,7 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
         cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
         cam!!.update()
+        app.setCamAndViewport(cam!!, viewPort as FitViewport)
 
         stage = Stage()
         table = Table(skin)
@@ -80,12 +81,13 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
         val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
         val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
 
-        table.add(heading).spaceBottom(120f).expandX().row()
+        table.add(heading).spaceBottom(300f).expandX().row()
         table.add(buttonCreateMeeting).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
         table.add(buttonJoinMeeting).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
         table.add(buttonConfiguration).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
 
         stage.addActor(table)
+
     }
 
     override fun hide() {
