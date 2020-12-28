@@ -41,8 +41,14 @@ class MeetyMain : Game() {
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterButtons = FreeTypeFontGenerator.FreeTypeFontParameter()
 
-        parameterTitle.size = 140
-        parameterButtons.size = 25
+        if (Gdx.graphics.height>1500) {
+            parameterTitle.size = 240
+            parameterButtons.size = 50
+        } else {
+            parameterTitle.size = 140
+            parameterButtons.size = 25
+        }
+
         parameterTitle.color = Color.ORANGE
         parameterButtons.color = Color.BLACK
 
