@@ -91,15 +91,27 @@ class CreateMeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputPro
                 return@TextFieldFilter false
         })
 
+        val dialog: Dialog = object : Dialog("", skin) {
+            override fun result(obj: Any) {
+                println("result $obj")
+            }
+        }
+        dialog.text("Can't create a new meeting.")
+        dialog.button("OK", true)
+
+
         val buttonStart = TextButton("Start Meeting", skin)
         buttonStart.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                var meeting = Meeting(typeButtonGroup.checked.text.toString(), participantsTextField.text.toInt(),
-                        turnTimeTextField.text.toInt(), costTextField.text.toInt())
-                app.startMeeting(meeting)
+                if (validateInputs(typeButtonGroup,participantsTextField.text,turnTimeTextField.text,costTextField.text)) {
+                    var meeting = Meeting(typeButtonGroup.checked.text.toString(), participantsTextField.text.toInt(),
+                                            turnTimeTextField.text.toInt(), costTextField.text.toInt())
+                    app.startMeeting(meeting)
+                } else {
+                    dialog.show(stage)
+                }
             }
         })
-
 
         table.add(type).spaceBottom(20f).align(Align.center).colspan(2).center().row()
         table.add(soloCheckbox).spaceBottom(55f).align(Align.center).expandX()
@@ -113,6 +125,15 @@ class CreateMeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputPro
         table.add(buttonStart).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
 
         stage.addActor(table)
+    }
+
+    private fun validateInputs(typeButtonGroup: ButtonGroup<CheckBox>, participants: String,
+                               turnTime: String, cost: String) : Boolean {
+
+        if (typeButtonGroup.checked == null) return false
+        if (participants.toInt()<=0 || turnTime.toInt()<=0 || cost.toInt()<=0) return false
+
+        return true
     }
 
     override fun hide() {
