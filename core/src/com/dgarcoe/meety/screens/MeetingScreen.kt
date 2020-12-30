@@ -1,37 +1,66 @@
 package com.dgarcoe.meety.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.dgarcoe.meety.Meeting
 import com.dgarcoe.meety.MeetyMain
 
 class MeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
+
+    lateinit var meeting : Meeting
+    lateinit var stage: Stage
+    lateinit var table: Table
+
+    private fun initStage() {
+
+        app.renderer.show()
+
+        stage = Stage()
+        table = Table(skin)
+
+        table.setFillParent(true)
+        Gdx.input.inputProcessor = stage
+    }
+
+    private fun setStage() {
+
+    }
+
     override fun hide() {
-        TODO("Not yet implemented")
+        dispose()
+        Gdx.input.inputProcessor = null
     }
 
     override fun show() {
-        TODO("Not yet implemented")
+        initStage()
+        setStage()
     }
 
     override fun render(delta: Float) {
-        TODO("Not yet implemented")
+        app.renderer.render(delta)
+
+        stage.act(delta)
+        stage.draw()
     }
 
     override fun pause() {
-        TODO("Not yet implemented")
+
     }
 
     override fun resume() {
-        TODO("Not yet implemented")
+
     }
 
     override fun resize(width: Int, height: Int) {
-        TODO("Not yet implemented")
+        app.renderer.resize(width, height)
     }
 
     override fun dispose() {
-        TODO("Not yet implemented")
+        stage.dispose()
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

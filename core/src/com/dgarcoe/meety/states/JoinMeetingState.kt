@@ -4,7 +4,7 @@ import com.dgarcoe.meety.MeetyMain
 
 class JoinMeetingState(app: MeetyMain) : MeetyState(app) {
 
-    override fun startMeeting(): Int {
+    override fun joinStartedMeeting(): Int {
         return 0
     }
 }

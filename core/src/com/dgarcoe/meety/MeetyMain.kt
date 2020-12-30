@@ -2,11 +2,9 @@ package com.dgarcoe.meety
 
 import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.meety.renderers.MeetyRenderer
 import com.dgarcoe.meety.screens.*
 import com.dgarcoe.meety.states.*
@@ -28,7 +26,7 @@ class MeetyMain : Game() {
     lateinit var joinMeetingScreen: JoinMeetingScreen
 
     val meetingState : MeetingState = MeetingState(this)
-    lateinit var meetinScreen : MeetingScreen
+    lateinit var meetingScreen : MeetingScreen
 
     val configurationState : ConfigurationState = ConfigurationState(this)
     lateinit var configureScreen: ConfigureScreen
@@ -71,7 +69,7 @@ class MeetyMain : Game() {
         mainMenuScreen = MainMenuScreen(this, skin,fontTitle)
         createMeetingScreen = CreateMeetingScreen(this, skin)
         joinMeetingScreen = JoinMeetingScreen(this, skin)
-        meetinScreen = MeetingScreen(this, skin)
+        meetingScreen = MeetingScreen(this, skin)
         configureScreen = ConfigureScreen(this, skin)
 
         currentState = mainMenuState
@@ -93,8 +91,12 @@ class MeetyMain : Game() {
         currentState.joinMeeting()
     }
 
-    fun startMeeting() {
-        currentState.startMeeting()
+    fun joinStartedMeeting() {
+        currentState.joinStartedMeeting()
+    }
+
+    fun startMeeting(meeting: Meeting) {
+        currentState.startMeeting(meeting)
     }
 
     fun startTurn() {
