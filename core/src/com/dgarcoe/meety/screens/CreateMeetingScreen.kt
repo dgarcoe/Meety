@@ -3,6 +3,7 @@ package com.dgarcoe.meety.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -14,15 +15,15 @@ import com.dgarcoe.meety.Meeting
 import com.dgarcoe.meety.MeetyMain
 
 
-class CreateMeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
+class CreateMeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle:BitmapFont) : Screen, InputProcessor {
 
     lateinit var stage: Stage
     lateinit var table: Table
 
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
-    private val WIDTH_TABLE_PERCENT = 0.8f
     private val HEIGHT_CHECKBOX_PERCENT = 0.025f
+    private val HEIGHT_TITLE_PERCENT = 0.1f
 
     private fun initStage() {
 
@@ -40,6 +41,11 @@ class CreateMeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputPro
         val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
         val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
         val checkBoxSize = Gdx.graphics.height*HEIGHT_CHECKBOX_PERCENT
+
+        val headingStyle = Label.LabelStyle()
+        headingStyle.font = fontTitle
+
+        val heading = Label("Create Meeting", headingStyle)
 
         val type = Label("Meeting Type",skin)
         val turnTime = Label("Turn Time (min)",skin)
@@ -113,16 +119,19 @@ class CreateMeetingScreen(val app: MeetyMain, val skin: Skin) : Screen, InputPro
             }
         })
 
-        table.add(type).spaceBottom(20f).align(Align.center).colspan(2).center().row()
-        table.add(soloCheckbox).spaceBottom(55f).align(Align.center).expandX()
-        table.add(multiCheckbox).spaceBottom(55f).align(Align.center).expandX().row()
-        table.add(participants).spaceBottom(20f).align(Align.center).colspan(2).center().row()
-        table.add(participantsTextField).spaceBottom(55f).align(Align.center).colspan(2).center().row()
-        table.add(turnTime).spaceBottom(20f).align(Align.center).colspan(2).center().row()
-        table.add(turnTimeTextField).spaceBottom(55f).align(Align.center).colspan(2).center().row()
-        table.add(cost).spaceBottom(20f).align(Align.center).colspan(2).center().row()
-        table.add(costTextField).spaceBottom(55f).align(Align.center).colspan(2).center().row()
-        table.add(buttonStart).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.top()
+        table.add("").height(0f).row()
+        table.add(heading).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
+        table.add(type).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).align(Align.center).colspan(2).center().row()
+        table.add(soloCheckbox).spaceTop(20f).align(Align.center).expandX()
+        table.add(multiCheckbox).spaceTop(20f).align(Align.center).expandX().row()
+        table.add(participants).spaceTop(20f).align(Align.center).colspan(2).center().row()
+        table.add(participantsTextField).spaceTop(20f).align(Align.center).colspan(2).center().row()
+        table.add(turnTime).spaceTop(20f).align(Align.center).colspan(2).center().row()
+        table.add(turnTimeTextField).spaceTop(20f).align(Align.center).colspan(2).center().row()
+        table.add(cost).spaceTop(20f).align(Align.center).colspan(2).center().row()
+        table.add(costTextField).spaceTop(20f).align(Align.center).colspan(2).center().row()
+        table.add(buttonStart).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(55f).row()
 
         stage.addActor(table)
     }

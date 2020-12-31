@@ -73,7 +73,7 @@ class MeetyMain : Game() {
         hourglassRenderer = HourglassRenderer(textureAtlas)
 
         mainMenuScreen = MainMenuScreen(this, skin,fontTitle)
-        createMeetingScreen = CreateMeetingScreen(this, skin)
+        createMeetingScreen = CreateMeetingScreen(this, skin, fontMenuTitle)
         joinMeetingScreen = JoinMeetingScreen(this, skin)
         meetingScreen = MeetingScreen(this, skin)
         configureScreen = ConfigureScreen(this, skin, fontMenuTitle)
