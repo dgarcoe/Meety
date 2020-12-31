@@ -21,6 +21,8 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
 
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
+    private val HEIGHT_TITLE_PERCENT = 0.1f
+    private val HEIGHT_BUTTONS_PERCENT = 0.4f
 
     lateinit var stage: Stage
     lateinit var table: Table
@@ -28,6 +30,7 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     private fun initStage() {
 
         app.renderer.show()
+        app.hourglassRenderer.show()
 
         stage = Stage()
         table = Table(skin)
@@ -67,10 +70,13 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
         val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
         val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
 
-        table.add(heading).spaceBottom(300f).expandX().row()
-        table.add(buttonCreateMeeting).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
-        table.add(buttonJoinMeeting).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
-        table.add(buttonConfiguration).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.top()
+        table.add("").height(0f).row()
+        table.add(heading).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
+        table.add(buttonCreateMeeting).width(buttonWidth).height(buttonHeight)
+                .spaceTop(Gdx.graphics.height*HEIGHT_BUTTONS_PERCENT).row()
+        table.add(buttonJoinMeeting).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
+        table.add(buttonConfiguration).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
 
         stage.addActor(table)
 
@@ -88,6 +94,7 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
 
     override fun render(delta: Float) {
         app.renderer.render(delta)
+        app.hourglassRenderer.renderMainMenu(delta)
 
         stage.act(delta)
         stage.draw()

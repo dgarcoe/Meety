@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.dgarcoe.meety.renderers.HourglassRenderer
 import com.dgarcoe.meety.renderers.MeetyRenderer
 import com.dgarcoe.meety.screens.*
 import com.dgarcoe.meety.states.*
@@ -34,27 +35,32 @@ class MeetyMain : Game() {
     lateinit var skin: Skin
 
     val renderer : MeetyRenderer = MeetyRenderer()
+    lateinit var hourglassRenderer : HourglassRenderer
+
+    lateinit var textureAtlas : TextureAtlas
 
     override fun create() {
 
         val generatorTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/BitPap.ttf"))
+        val generatorMenuTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/BitPap.ttf"))
         val generatorButtons = FreeTypeFontGenerator(Gdx.files.internal("fonts/minecraft.ttf"))
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
+        val parameterMenuTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterButtons = FreeTypeFontGenerator.FreeTypeFontParameter()
 
-        if (Gdx.graphics.height>1500) {
-            parameterTitle.size = 240
-            parameterButtons.size = 50
-        } else {
-            parameterTitle.size = 140
-            parameterButtons.size = 25
-        }
+        parameterTitle.size = (Gdx.graphics.height*0.14f).toInt()
+        parameterButtons.size = (Gdx.graphics.height*0.02f).toInt()
+        parameterMenuTitle.size = (Gdx.graphics.height*0.05f).toInt()
 
         parameterTitle.color = Color.ORANGE
+        parameterMenuTitle.color = Color.ORANGE
         parameterButtons.color = Color.BLACK
 
         val fontTitle = generatorTitle.generateFont(parameterTitle)
         generatorTitle.dispose()
+
+        val fontMenuTitle = generatorTitle.generateFont(parameterMenuTitle)
+        generatorMenuTitle.dispose()
 
         val fontButtons = generatorButtons.generateFont(parameterButtons)
         generatorButtons.dispose()
@@ -66,6 +72,9 @@ class MeetyMain : Game() {
         skin.addRegions(TextureAtlas(Gdx.files.internal("skin/skin/metal-ui.atlas")))
         skin.load(Gdx.files.internal("skin/skin/metal-ui.json"))
 
+        textureAtlas = TextureAtlas(Gdx.files.internal("sprites/sprites.txt"))
+        hourglassRenderer = HourglassRenderer(textureAtlas)
+
         mainMenuScreen = MainMenuScreen(this, skin,fontTitle)
         createMeetingScreen = CreateMeetingScreen(this, skin)
         joinMeetingScreen = JoinMeetingScreen(this, skin)
@@ -76,6 +85,11 @@ class MeetyMain : Game() {
         currentScreen = mainMenuScreen
         setScreen(currentScreen)
 
+    }
+
+    override fun dispose() {
+        skin.dispose()
+        textureAtlas.dispose()
     }
 
     fun startNewScreen(screen:Screen) {
