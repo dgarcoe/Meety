@@ -42,7 +42,6 @@ class MeetyMain : Game() {
     override fun create() {
 
         val generatorTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/BitPap.ttf"))
-        val generatorMenuTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/BitPap.ttf"))
         val generatorButtons = FreeTypeFontGenerator(Gdx.files.internal("fonts/minecraft.ttf"))
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterMenuTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
@@ -57,10 +56,8 @@ class MeetyMain : Game() {
         parameterButtons.color = Color.BLACK
 
         val fontTitle = generatorTitle.generateFont(parameterTitle)
-        generatorTitle.dispose()
-
         val fontMenuTitle = generatorTitle.generateFont(parameterMenuTitle)
-        generatorMenuTitle.dispose()
+        generatorTitle.dispose()
 
         val fontButtons = generatorButtons.generateFont(parameterButtons)
         generatorButtons.dispose()
@@ -79,7 +76,7 @@ class MeetyMain : Game() {
         createMeetingScreen = CreateMeetingScreen(this, skin)
         joinMeetingScreen = JoinMeetingScreen(this, skin)
         meetingScreen = MeetingScreen(this, skin)
-        configureScreen = ConfigureScreen(this, skin)
+        configureScreen = ConfigureScreen(this, skin, fontMenuTitle)
 
         currentState = mainMenuState
         currentScreen = mainMenuScreen

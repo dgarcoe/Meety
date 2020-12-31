@@ -3,8 +3,6 @@ package com.dgarcoe.meety.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -13,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.FitViewport
-import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.meety.MeetyMain
 
 class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFont) : Screen, InputProcessor {
@@ -22,7 +18,7 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
     private val HEIGHT_TITLE_PERCENT = 0.1f
-    private val HEIGHT_BUTTONS_PERCENT = 0.4f
+    private val HEIGHT_TOP_BUTTON_PERCENT = 0.4f
 
     lateinit var stage: Stage
     lateinit var table: Table
@@ -74,7 +70,7 @@ class MainMenuScreen(val app:MeetyMain, val skin: Skin, val fontTitle: BitmapFon
         table.add("").height(0f).row()
         table.add(heading).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
         table.add(buttonCreateMeeting).width(buttonWidth).height(buttonHeight)
-                .spaceTop(Gdx.graphics.height*HEIGHT_BUTTONS_PERCENT).row()
+                .spaceTop(Gdx.graphics.height*HEIGHT_TOP_BUTTON_PERCENT).row()
         table.add(buttonJoinMeeting).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
         table.add(buttonConfiguration).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
 

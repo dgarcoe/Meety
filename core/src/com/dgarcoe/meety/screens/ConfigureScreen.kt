@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -14,14 +15,16 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.meety.MeetyMain
 
-class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcessor {
+class ConfigureScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFont) : Screen, InputProcessor {
 
     lateinit var stage: Stage
     lateinit var table: Table
 
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
-    private val WIDTH_TEXT_PERCENT = 0.5f
+    private val WIDTH_TEXT_PERCENT = 0.49f
+    private val HEIGHT_TITLE_PERCENT = 0.1f
+    private val HEIGHT_CONF_PERCENT = 0.1f
 
     private fun initStage() {
 
@@ -35,6 +38,11 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
     }
 
     private fun setStage() {
+
+        val headingStyle = Label.LabelStyle()
+        headingStyle.font = fontTitle
+
+        val heading = Label("Configuration", headingStyle)
 
         val username = Label("Username: ",skin)
         val mqttServerIP = Label("MQTT IP: ",skin)
@@ -71,14 +79,17 @@ class ConfigureScreen(val app: MeetyMain, val skin: Skin) : Screen, InputProcess
         val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
         val textFieldWidth = Gdx.graphics.width*WIDTH_TEXT_PERCENT
 
-        table.add(username).spaceBottom(15f).align(Align.left)
-        table.add(usernameTextField).width(textFieldWidth).spaceBottom(15f).row()
-        table.add(mqttServerIP).spaceBottom(15f).align(Align.left)
-        table.add(mqttServerIPTextField).width(textFieldWidth).spaceBottom(15f).row()
-        table.add(mqttServerPort).spaceBottom(45f).align(Align.left)
-        table.add(mqttServerPortTextField).width(textFieldWidth).spaceBottom(45f).row()
-        table.add(buttonSave).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
-        table.add(buttonBack).colspan(2).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.top()
+        table.add("").height(0f).row()
+        table.add(heading).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
+        table.add(username).spaceTop(Gdx.graphics.height*HEIGHT_CONF_PERCENT).align(Align.left).pad(15f)
+        table.add(usernameTextField).width(textFieldWidth).spaceTop(Gdx.graphics.height*HEIGHT_CONF_PERCENT).row()
+        table.add(mqttServerIP).spaceTop(15f).align(Align.left).pad(15f)
+        table.add(mqttServerIPTextField).width(textFieldWidth).spaceTop(15f).row()
+        table.add(mqttServerPort).spaceTop(15f).align(Align.left).pad(15f)
+        table.add(mqttServerPortTextField).width(textFieldWidth).spaceTop(15f).row()
+        table.add(buttonSave).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(45f).row()
+        table.add(buttonBack).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
 
         stage.addActor(table)
 
