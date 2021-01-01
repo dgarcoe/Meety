@@ -46,10 +46,12 @@ class MeetyMain : Game() {
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterMenuTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterButtons = FreeTypeFontGenerator.FreeTypeFontParameter()
+        val parameterCounter = FreeTypeFontGenerator.FreeTypeFontParameter()
 
         parameterTitle.size = (Gdx.graphics.height*0.14f).toInt()
         parameterButtons.size = (Gdx.graphics.height*0.02f).toInt()
         parameterMenuTitle.size = (Gdx.graphics.height*0.05f).toInt()
+        parameterCounter.size = (Gdx.graphics.height*0.1f).toInt()
 
         parameterTitle.color = Color.ORANGE
         parameterMenuTitle.color = Color.ORANGE
@@ -60,6 +62,7 @@ class MeetyMain : Game() {
         generatorTitle.dispose()
 
         val fontButtons = generatorButtons.generateFont(parameterButtons)
+        val fontCounter = generatorButtons.generateFont(parameterCounter)
         generatorButtons.dispose()
 
         preferences = Gdx.app.getPreferences("MeetyPreferences")
@@ -75,7 +78,7 @@ class MeetyMain : Game() {
         mainMenuScreen = MainMenuScreen(this, skin,fontTitle)
         createMeetingScreen = CreateMeetingScreen(this, skin, fontMenuTitle)
         joinMeetingScreen = JoinMeetingScreen(this, skin)
-        meetingScreen = MeetingScreen(this, skin)
+        meetingScreen = MeetingScreen(this, skin, fontMenuTitle, fontCounter)
         configureScreen = ConfigureScreen(this, skin, fontMenuTitle)
 
         currentState = mainMenuState
