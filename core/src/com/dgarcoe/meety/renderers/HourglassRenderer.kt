@@ -93,8 +93,38 @@ class HourglassRenderer(val atlas: TextureAtlas) {
         spriteBatch = SpriteBatch()
     }
 
-    fun render(delta: Float) {
+    fun render(delta: Float, progress: Int, begin: Boolean, end: Boolean) {
 
+        var currentAnimation : Animation<TextureRegion> = hourglassBegin
+
+        if (begin) currentAnimation =hourglassBegin
+
+        when (progress) {
+            in 83..100 -> currentAnimation = hourglassFirstInterval
+            in 67..82 -> currentAnimation = hourglassSecondInterval
+            in 50..66 -> currentAnimation = hourglassThirdInterval
+            in 33..49 -> currentAnimation = hourglassFourthInterval
+            in 16..32 -> currentAnimation = hourglassFifthInterval
+            in 0..15 -> currentAnimation = hourglassSixthInterval
+        }
+
+        spriteBatch!!.begin()
+        stateTime += delta
+
+        var currentFrame : TextureRegion
+        if (begin) {
+            currentFrame = staticHourglassEnd
+        } else {
+            currentFrame = currentAnimation.getKeyFrame(stateTime)
+        }
+
+        if (end) {
+            currentFrame = staticHourglassEnd
+        }
+
+        spriteBatch!!.draw(currentFrame, Gdx.graphics.width/2f-hourglassSize/2,Gdx.graphics.height/3f+hourglassSize/2,
+                hourglassSize*1f,hourglassSize*1f)
+        spriteBatch!!.end()
 
     }
 

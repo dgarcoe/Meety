@@ -24,6 +24,7 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     lateinit var table: Table
 
     private val HEIGHT_TITLE_PERCENT = 0.1f
+    private val HEIGHT_COUNTER_PERCENT = 0.4f
     private val WIDTH_BUTTON_PERCENT = 0.45f
     private val HEIGHT_BUTTON_PERCENT = 0.05f
 
@@ -32,6 +33,9 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     private var totalTurnTime: Long = 0
 
     private lateinit var counter: Label
+
+    private var beginCounter : Boolean = true
+    private var endCounter : Boolean = false
 
     private fun initStage() {
 
@@ -74,6 +78,7 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
                     meeting.turnInProgress = true
                     buttonTurn.setText("Pause Turn")
                     startedTime = TimeUtils.millis()
+                    beginCounter = false
                 } else {
                     meeting.turnInProgress = false
                     buttonTurn.setText("Start Turn")
@@ -98,7 +103,7 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
         table.top()
         table.add("").height(0f).row()
         table.add(heading).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
-        table.add(counter).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
+        table.add(counter).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_COUNTER_PERCENT).expandX().row()
         table.add(buttonTurn).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(55f).row()
         table.add(buttonPassTurn).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
         table.add(buttonEndMeeting).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
@@ -119,19 +124,27 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     override fun render(delta: Float) {
         app.renderer.render(delta)
 
-        if (meeting.turnInProgress) {
+        if (meeting.turnInProgress && !endCounter) {
+
             currentTurnTime -= TimeUtils.timeSinceMillis(startedTime)
             startedTime = TimeUtils.millis()
             counter.setText(timeToString(currentTurnTime))
 
-            if (currentTurnTime/totalTurnTime.toFloat() < 0.5) {
+            if (currentTurnTime/totalTurnTime.toFloat() < 0.4) {
                counter.color = Color.ORANGE
             }
 
             if (currentTurnTime/totalTurnTime.toFloat() < 0.1) {
                 counter.color = Color.RED
             }
+
+            if (currentTurnTime/totalTurnTime.toFloat() <= 0.0) {
+                endCounter = true
+            }
         }
+
+        val progress = ((currentTurnTime/totalTurnTime.toFloat())*100).toInt()
+        app.hourglassRenderer.render(delta, progress, beginCounter, endCounter)
 
         stage.act(delta)
         stage.draw()
