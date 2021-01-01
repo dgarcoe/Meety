@@ -24,6 +24,8 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     lateinit var table: Table
 
     private val HEIGHT_TITLE_PERCENT = 0.1f
+    private val WIDTH_BUTTON_PERCENT = 0.45f
+    private val HEIGHT_BUTTON_PERCENT = 0.05f
 
     private var startedTime: Long = 0
     private var currentTurnTime: Long = 0
@@ -43,6 +45,9 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
     }
 
     private fun setStage() {
+
+        val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
+        val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
 
         meeting.turnInProgress = false
 
@@ -83,20 +88,20 @@ class MeetingScreen(val app: MeetyMain, val skin: Skin, val fontTitle: BitmapFon
             }
         })
 
-        val buttonEndMeeting = TextButton("Pass Turn", skin)
+        val buttonEndMeeting = TextButton("End Meeting", skin)
         buttonEndMeeting.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
 
             }
         })
 
-
-
         table.top()
         table.add("").height(0f).row()
         table.add(heading).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
         table.add(counter).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
-        table.add(buttonTurn).colspan(2).spaceTop(Gdx.graphics.height*HEIGHT_TITLE_PERCENT).expandX().row()
+        table.add(buttonTurn).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(55f).row()
+        table.add(buttonPassTurn).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
+        table.add(buttonEndMeeting).colspan(2).width(buttonWidth).height(buttonHeight).spaceTop(15f).row()
 
         stage.addActor(table)
     }
